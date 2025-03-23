@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Login and Signup</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 400px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+        .form-group .error {
+            color: red;
+            font-size: 12px;
+            display: none;
+        }
+
+        .form-button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .form-button:hover {
+            background-color: #0056b3;
+        }
+
+        .toggle-link {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+            color: #007bff;
+            cursor: pointer;
+        }
+
+        .toggle-link:hover {
+            text-decoration: underline;
+        }
+
+        .form-container {
+            display: none;
+        }
+
+        .form-container.active {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Login Form -->
+        <div id="loginForm" class="form-container active">
+            <h2>Login</h2>
+            <div class="form-group">
+                <label for="loginEmail">Email</label>
+                <input type="email" id="loginEmail" placeholder="Enter your email" required>
+                <div id="loginEmailError" class="error">Please enter a valid email.</div>
+            </div>
+            <div class="form-group">
+                <label for="loginPassword">Password</label>
+                <input type="password" id="loginPassword" placeholder="Enter your password" required>
+                <div id="loginPasswordError" class="error">Password is required.</div>
+            </div>
+            <button class="form-button" onclick="validateLoginForm()">Login</button>
+            <span class="toggle-link" onclick="toggleForms()">Don't have an account? Sign up</span>
+        </div>
+
+        <!-- Signup Form -->
+        <div id="signupForm" class="form-container">
+            <h2>Sign Up</h2>
+            <div class="form-group">
+                <label for="signupEmail">Email</label>
+                <input type="email" id="signupEmail" placeholder="Enter your email" required>
+                <div id="signupEmailError" class="error">Please enter a valid email.</div>
+            </div>
+            <div class="form-group">
+                <label for="signupPassword">Password</label>
+                <input type="password" id="signupPassword" placeholder="Enter your password" required>
+                <div id="signupPasswordError" class="error">Password is required.</div>
+            </div>
+            <div class="form-group">
+                <label for="signupConfirmPassword">Confirm Password</label>
+                <input type="password" id="signupConfirmPassword" placeholder="Confirm your password" required>
+                <div id="signupConfirmPasswordError" class="error">Passwords do not match.</div>
+            </div>
+            <button class="form-button" onclick="validateSignupForm()">Sign Up</button>
+            <span class="toggle-link" onclick="toggleForms()">Already have an account? Login</span>
+        </div>
+        
+    </div>
+
+    <script>
+        // Toggle between login and signup forms
+        function toggleForms() {
+            const loginForm = document.getElementById('loginForm');
+            const signupForm = document.getElementById('signupForm');
+            loginForm.classList.toggle('active');
+            signupForm.classList.toggle('active');
+        }
+
+        // Validate login form
+        function validateLoginForm() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            let valid = true;
+
+            // Clear previous errors
+            document.getElementById('loginEmailError').style.display = 'none';
+            document.getElementById('loginPasswordError').style.display = 'none';
+
+            // Check if email is valid
+            if (!validateEmail(email)) {
+                document.getElementById('loginEmailError').style.display = 'block';
+                valid = false;
+            }
+
+            // Check if password is provided
+            if (!password) {
+                document.getElementById('loginPasswordError').style.display = 'block';
+                valid = false;
+            }
+
+            if (valid) {
+                alert('Login successful');
+                // Handle login success logic here (e.g., redirect to dashboard)
+            }
+        }
+
+        // Validate signup form
+        function validateSignupForm() {
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            const confirmPassword = document.getElementById('signupConfirmPassword').value;
+            let valid = true;
+
+            // Clear previous errors
+            document.getElementById('signupEmailError').style.display = 'none';
+            document.getElementById('signupPasswordError').style.display = 'none';
+            document.getElementById('signupConfirmPasswordError').style.display = 'none';
+
+            // Check if email is valid
+            if (!validateEmail(email)) {
+                document.getElementById('signupEmailError').style.display = 'block';
+                valid = false;
+            }
+
+            // Check if password is provided
+            if (!password) {
+                document.getElementById('signupPasswordError').style.display = 'block';
+                valid = false;
+            }
+
+            // Check if passwords match
+            if (password !== confirmPassword) {
+                document.getElementById('signupConfirmPasswordError').style.display = 'block';
+                valid = false;
+            }
+
+            if (valid) {
+                alert('Sign up successful');
+                // Handle signup success logic here (e.g., redirect to login or dashboard)
+            }
+        }
+
+        // Helper function to validate email format
+        function validateEmail(email) {
+            const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return regex.test(email);
+        }
+    </script>
+</body>
+
+</html>
